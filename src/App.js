@@ -24,17 +24,11 @@ class App extends Component {
   readColor = (color) => {
         switch (color) {
           case "yellow": this.send('blue');
-            break;
           case "grey": this.send('red');
-            break;
           case "red":this.send('green');
-            break;
           case "green":this.send('blue');
-            break;
           case "blue": this.send('grey');
-            break;
           default: this.send('white');
-          break;
         }
   }
 
@@ -43,20 +37,20 @@ class App extends Component {
     //const socket = socketIOClient(this.state.endpoint);
      this.socket.on('change color', (col) => {
        document.body.style.backgroundColor = col
-       //this.setColor(col)
      })
 
     return (
-      <div style={{ textAlign: "center" }}>
+    <div className="Rio">
+      <div style={{ textAlign: "center", position: "absolute" }}>
         <button onClick={() => this.send() }>Clear Color</button>
         <button id="blue" onClick={() => this.send('blue')}>Blue</button>
         <button id="red" onClick={() => this.send('red')}>Red</button>
         <button id={this.state.color} onClick={(e) => this.readColor(this.state.color)}>Current {this.state.color}, Click to Switch next </button>
-
-
-        {Three}
-
       </div>
+      <div>
+        {Three}
+      </div>
+    </div>
     )
   }
 }
