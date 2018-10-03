@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import socketIOClient from "socket.io-client";
 import Three from "./Three";
 
-
 class App extends Component {
   constructor() {
     super();
