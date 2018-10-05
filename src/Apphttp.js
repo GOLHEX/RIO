@@ -7,22 +7,10 @@ class App extends Component {
     super();
     this.state = {
       endpoint: "http://yarn.ddns.net:4001",
-      endpointS: "https://yarn.ddns.net:8443",
       color: 'whit'
     };
-
-   //socketAddr is server uri  ex. https://ww2.my_example.com:3300
-   //var socket = io.connect(socketAddr,{'flash policy port':3300});
-   //socket.on('connect', function () { .....
-  //this.socket = io.connect('https://yarn.ddns.net',{secure: true, port:4001});
-  //this.socket = io(this.endpointS,{'flash policy port':3000, secure:true})
-  this.socket = io(this.state.endpointS)
-  // this.socket = io(':3000'),
-  //       this.socket.on('connect', function() {
-  //           this.socket.emit('subscribe')
-  //       });
-
-
+    //this.socket = io(this.state.endpoint,{secure:true})
+  this.socket = io(this.state.endpoint)
 
   }
 
@@ -55,7 +43,7 @@ class App extends Component {
   render() {
 
     //const socket = socketIOClient(this.state.endpoint);
-    this.socket.on('change color', (col) => {
+     this.socket.on('change color', (col) => {
        document.body.style.backgroundColor = col
      })
 
