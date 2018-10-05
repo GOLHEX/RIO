@@ -1,76 +1,73 @@
-import React, { Component } from "react";
-import io from "socket.io-client";
+import React, { Component } from "react"
+import io from "socket.io-client"
 import Three from "./Three";
 
 class App extends Component {
   constructor() {
     super();
+    this.handleClick = this.handleClick.bind(this);
     this.state = {
-      endpoint: "http://yarn.ddns.net:4001",
-      endpointS: "https://yarn.ddns.net:8443",
-      color: 'whit'
+      endpoint: "https://yarn.ddns.net:8443",
+      color: '#795548',
+      rnd: 14,
+      colors: [
+                  '#F44336',
+                  '#E91E63',
+                  '#9C27B0',
+                  '#673AB7',
+                  '#3F51B5',
+                  '#2196F3',
+                  '#03A9F4',
+                  '#00BCD4',
+                  '#009688',
+                  '#4CAF50',
+                  '#8BC34A',
+                  '#CDDC39',
+                  '#FFEB3B',
+                  '#FFC107',
+                  '#FF9800',
+                  '#FF5722',
+                  '#795548',
+                  '#9E9E9E',
+                  '#607D8B'
+                ]
     };
 
-   //socketAddr is server uri  ex. https://ww2.my_example.com:3300
-   //var socket = io.connect(socketAddr,{'flash policy port':3300});
-   //socket.on('connect', function () { .....
-  //this.socket = io.connect('https://yarn.ddns.net',{secure: true, port:4001});
-  //this.socket = io(this.endpointS,{'flash policy port':3000, secure:true})
-  this.socket = io(this.state.endpointS)
-  // this.socket = io(':3000'),
-  //       this.socket.on('connect', function() {
-  //           this.socket.emit('subscribe')
-  //       });
-
-
+  this.socket = io.connect(this.state.endpoint)
 
   }
 
-  send = (cd) => {
-    //const socket = socketIOClient(this.state.endpoint);
-    this.socket.emit('change color', cd) // change 'red' to this.state.color
+  handleClick() {
+    const rnd = this.getRandomInt(0, 14);
+    this.setState({ rnd: rnd });
+    this.setState({ color: this.state.palette[this.state.rnd]});
+    this.cc(this.state.color);
   }
 
-  any = () => {
-    //const socket = socketIOClient(this.state.endpoint);
-    this.socket.emit('any') // change 'red' to this.state.color
+  getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
   }
 
-  setColor = (color) => {
-    this.setState({ color })
-  }
-  
+  cc = (cd) => {
 
-  readColor = (color) => {
-        switch (color) {
-          case "yellow": this.send('blue');
-          case "grey": this.send('yellow');
-          case "red":this.send('green');
-          case "green":this.send('blue');
-          case "blue": this.send('grey');
-          default: this.send('white');
-        }
+    this.socket.emit('cc', cd) 
   }
 
   render() {
 
-    //const socket = socketIOClient(this.state.endpoint);
-    this.socket.on('change color', (col) => {
-       document.body.style.backgroundColor = col
-     })
-
-    this.socket.on('any', () => {
-       alert('Другое событие');
-     })
+    this.socket.on('rnd', (cd) => {
+       document.body.style.backgroundColor = cd
+     });
 
     return (
     <div className="Rio">
       <div style={{ textAlign: "center", position: "absolute" }}>
-        <button onClick={() => this.send() }>Clear Color</button>
-        <button id="blue" onClick={() => this.send('blue')}>Blue</button>
-        <button id="red" onClick={() => this.send('red')}>Red</button>
-        <button id="any" onClick={(e) => this.any()}>Click to Any event </button>
+        <button onClick={(e) => this.cc() }>Clear Color</button>
+        <button id="rnd" onClick={this.handleClick.bind(this)}>Random Color is: {this.state.color}</button>
       </div>
+      
+
+      
       <div>
         {Three}
       </div>

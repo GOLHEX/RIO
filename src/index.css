@@ -8,20 +8,16 @@ body {
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
-	background-color: red;
 },
 canvas {
-	background-color: red;
 	margin: 0;
 	padding: 0;
 },
 .Rio {
-	background-color: red;
 	margin: 0;
 	padding: 0;
 }
 #root {
-	background-color: red;
 	margin: 0;
 	padding: 0;
 }
