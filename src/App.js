@@ -1,6 +1,8 @@
 import React, { Component } from "react"
 import io from "socket.io-client"
-import Three from "./Three";
+import Tetra from "./three/Tetra"
+import W from "./wrapper/W"
+
 
 class App extends Component {
   constructor() {
@@ -39,8 +41,8 @@ class App extends Component {
 
   handleClick() {
     const rnd = this.getRandomInt(0, 14);
-    this.setState({ rnd: rnd });
-    this.setState({ color: this.state.palette[this.state.rnd]});
+    //this.setState({ rnd: rnd });
+    this.setState({ color: this.state.colors[rnd]});
     this.cc(this.state.color);
   }
 
@@ -49,30 +51,20 @@ class App extends Component {
   }
 
   cc = (cd) => {
-
     this.socket.emit('cc', cd) 
   }
 
+
+
   render() {
 
-    this.socket.on('rnd', (cd) => {
-       document.body.style.backgroundColor = cd
-     });
-
     return (
-    <div className="Rio">
-      <div style={{ textAlign: "center", position: "absolute" }}>
-        <button onClick={(e) => this.cc() }>Clear Color</button>
-        <button id="rnd" onClick={this.handleClick.bind(this)}>Random Color is: {this.state.color}</button>
-      </div>
-      
+      <W>
+        <Tetra io={this.socket} />
+      </W>
 
-      
-      <div>
-        {Three}
-      </div>
-    </div>
     )
   }
 }
+
 export default App;

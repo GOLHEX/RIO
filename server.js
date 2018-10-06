@@ -9,33 +9,28 @@ const ca = fs.readFileSync('./ssl/rootCA.crt');
 const credentials = {key: privateKey, cert: certificate, ca: ca};
 
 const port = 8443;
-
+let lastColor;
 const app = require('express'),
 server = require('https').createServer(credentials, app),
 io = require('socket.io').listen(server);
 
 io.on('connection', socket => {
   console.log('New client id: '+socket.id+' connected to https server ')
-  //console.log(socket.handshake.headers.host)
+  //Send lact color to user
+  if(lastColor){
+    io.to(`${socket.id}`).emit('rnd', lastColor);
+  }else{
+    io.sockets.emit('rnd', '#F44336')
+  }
 
-  // just like on the client side, we have a socket.on method that takes a callback function
   socket.on('cc', (cd) => {
-    // once we get a 'change color' event from one of our clients, we will send it to the rest of the clients
-    // we make use of the socket.emit method again with the argument given to use from the callback function above
+    lastColor = cd;
     console.log('User id: '+socket.id+' Changed Color to: ', cd)
     console.log(socket.handshake.headers.host)
-    //console.log('Server host: '+httpServer.address().address+' port: '+httpServer.address().port+' Emit: ', color)
     io.sockets.emit('rnd', cd)
-  })
-  //Any event
-  socket.on('any', () => {
-    console.log('User id: '+socket.id+' Any event: ')
-    console.log(socket.handshake.headers.host)
-    io.sockets.emit('any')
-  })
-  // disconnect is fired when a client leaves the server
-  
+  });
 
+  // disconnect is fired when a client leaves the server
   socket.on('disconnect', () => {
     console.log('User disconnected, id:' + socket.id)
     io.clients((error, clients) => {
