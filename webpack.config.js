@@ -1,6 +1,17 @@
 module.exports = {
         module: {
+
             rules: [
+                {
+                    // The delimiter of path fragment of stupid windows has the format "//"
+                    test: /\.js$/,
+                    include: /examples/,
+                    use: [
+                      {
+                        loader: "three-contrib-loader"
+                      }
+                    ]
+                },
                 {
                     test: /\.сss$/,
                     exclude: /node_modules/,
@@ -13,7 +24,7 @@ module.exports = {
                 },
                 {
                     test: /\.(js|jsx)$/,
-                    exclude: /(node_modules|bower_components)/,
+                    exclude: /(node_mordules|bower_components)/,
                     use: [
                         'babel-loader'
                     ]

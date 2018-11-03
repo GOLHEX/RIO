@@ -1,7 +1,7 @@
 const fs = require( 'fs' );
-const cors = require('cors');
-const https = require('https');
-const socketIO = require('socket.io')
+//const cors = require('cors');
+//const https = require('https');
+//const socketIO = require('socket.io')
 
 const privateKey  = fs.readFileSync('./ssl/server.key');
 const certificate = fs.readFileSync('./ssl/server.crt');
